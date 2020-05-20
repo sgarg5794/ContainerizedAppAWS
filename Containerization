@@ -1,0 +1,61 @@
+Containers :
+  Containers is an additional layer over VM which can share the OS and some other resources such as drivers and binaries 
+  which makes it a much lighter instance.
+  So Like VMs , Just like with VMs, we are still able to obtain isolation of the application environment 
+  and dedication of underlying resources. Also the backup and stuff gets lighter to handle .
+  There are three different terminology :
+    Image : Blue print of a container.Everything we need is packaged into a docker file which is converted into image .
+    Container : The running instance of image is called container .
+    Registry : Where the images are kept/stored : Docker Hub and Amazon ECR (Elastic Container Registry).
+Docker :
+  Docker Daemon,Docker Client,Image Registry 
+  Docker Client: Through which we issue commands such as docker create , Docker run , Docker rm . Its a cli .
+  Docker Daemon : It executes the commands we issues through docker client. It provides all that we need like port information
+  network information and stuff.your container needs access to network ports, storage volumes, or any other components at 
+  the operating system level, the Docker daemon will provide that.
+  
+  Image Registry: Its a central repository for the images , which is a blueprint/ligh weight executible packages 
+  which tells us what the container should look like , what should it contain ,what are the dependencies which can be put 
+  inside .
+  
+  Docker file ->build -> Docker Image -> run -> Docker container .
+  
+  The Docker daemon is installed on a host machine and essentially acts as the brain of the Docker; that creates 
+  and manages your Docker images on your behalf. Its whole purpose is to perform the commands that the client issues. 
+  So, if you issue the Docker stop command for a particular container, the daemon will go ahead and find that container 
+  and stop it
+  So once a container is built it cannot be changed unless you build a new image . Image is a read only artifacts .
+  
+  
+Docker file and artifacts:
+  A Docker file is essentially a set of instructions on how to build a container step by step.
+  The From instruction sets the base image from which we are going to build on top of. 
+  Docker images can be layered on top of one another.
+  If you leave off the tag, when the Docker image is built, it will assume that you want the latest version of that image.
+  The great thing about base images is that if you need the same set of tools across multiple containers, you can capture that 
+  in an image and then use it as a base image wherever needed.
+  Maintainer instruction. This one is simple. This just allows you to set up who the author of the Docker file is
+    Maintainer Sahil Garg "sahilgarg5794@gmail.com"
+  The Run instruction will execute whatever commands you define in a shell.
+  Copy instruction. This will allow you to copy files from the machine the Docker file is being built on into the image
+  WORKDIRECTORY instruction which will set the working directory for any subsequent instructions that will be run.
+          WORKDIR /app
+  EXPOSE instruction. This is going to expose a port for the container to communicate on. If you want you container to be 
+  able to communicate with external entities like other containers or remote services, you will need to include the expose 
+  instruction to define what port your container will listen on.
+          EXPOSE 8080
+  ENTRYPOINT instruction. This instruction lets you define what script or command you want to run when the container starts up.
+          ENTRYPOINT ["python"]
+  The COMMAND instruction is similar to the ENTRYPOINT instruction at a high level. This instruction allows you to execute 
+  commands or scripts at runtime.
+          CMD [app.py]
+  Difference between ENTRYPOINT and COMMAND is COMMAND does give you the ability to override what gets executed at runtime.
+  Whereas ENTRYPOINT cannot be overwritten at runtime and is static once it's been defined.
+  But now ,Entrypoint can be overridden at runtime using --entrypoint flag . Cmd is basically used to feed default parameters
+  to entry point .For eg, the following instruction will be executed :
+        python app.py 
+  
+
+  
+    
+ 
