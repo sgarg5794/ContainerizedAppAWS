@@ -54,6 +54,68 @@ Docker file and artifacts:
   But now ,Entrypoint can be overridden at runtime using --entrypoint flag . Cmd is basically used to feed default parameters
   to entry point .For eg, the following instruction will be executed :
         python app.py 
+Union File System and Copy on Write:
+  When you build your Docker File, each instruction in the Docker File creates a layer. And these layers are then stacked 
+  together to build container images. Each layer is read only and is shared across images when common layers exist. When a 
+  container is run from an image, a writable layer is added on the top, where files can then be modified.
+  
+  Docker form layer with each instruction which can be reused . we can see the layers using docker inspect command :
+          docker inspect image_id
+  This way we can view the layers which can be reused . For eg if we are doung from ubuntu , next time we use ubuntu OS it will
+  use the layer and not download the image .
+  Docker use union file system i.e like stack , if a file is modified it will be upadated and stored in an upper layer which 
+  will be used . Images are read only . When a container is run from an image , docker mounts a writable layer on top of the re
+  ad only layers . Any modification will be done in this writable layers . This is called copy on write strategy where the image
+  files remain unchanged and won't be changed and hence multiple containers can use these images and hence it promotes shorter 
+  image size .
+Docker volumes :
+  if a container is desroyed the writable layer will also get destroyed .So here comes into pciture is Docker volumes where we
+  have docker volumes in which data is persisted even after the container is destroyed .
+Docker CLI and LOGGING:
+  we can run the container like this :
+      docker run -d(detachable mode) -p(publish) 8080(container port):8080(amazon ecs port) image_id
+  we can check if the conatiner is running properlu:
+      docker container ls 
+  to open interactive shell inside docker container: 
+      docker exec -it container_id bash
+  to see logs :
+      docker logs
+  to see container logs , we will have to go to container path and then check logs :
+      sudo su 
+      cd var/lib/docker/containers
+      ls
+      cat log-file_name.json
+  To check if the docker has been stopped or not,Following command will give all the containers whether they are up or stopped:
+      docker container ps -a
+
+Amazon ECR:
+  a public registry isn't going to work for a lot of used cases, especially for security reasons. This is where private 
+  registries come into play. Private registries allow you to have a privately hosted service that can help with management 
+  of the images and provide strict access.
+  while you have access to this through services like Docker Hub, you also have an AWS service called Amazon Elastic Container
+  Registry, or ECR. ECR is managed AWS Docker Registry service that is secure, scalable, and reliable. It supports private 
+  Docker repositories with resource-based permissions using AWS IAM so that specific users or virtual machines can access 
+  repositories and images.    
+  If you were to try and run your own private registry, two major concerns would be scalability and durability. 
+  Private registries are often hosted within an environment, whether cloud or on prem, using servers to manage the calls 
+  made by the Docker CLI. 
+  you could use a service like Amazon S3 for holding your images, where you get very high levels of availability and 
+  durability, but then access to the images would have to be handled through additional tools instead of the Docker CLI.
+
+Amazon Elastic Bean Stack :
+  Amazon Elastic Compute Cloud is often a service you would look to for your hosting needs. You can create your own Amazon 
+  Virtual Private Cloud or VPC, provision virtual servers or Amazon EC2 instances, and place them in subnets inside of your 
+  VPC, set up Amazon EC2 Auto Scaling, front the whole thing with an elastic load balancer, and then deploy your application
+  onto your instances.
+  AWS Elastic Beanstalk is an easy-to-use service for deploying and scaling web applications and services developed with 
+  various languages and application servers.You don't need to provision and manage any infrastructure to get your code hosted
+  on EC2. Instead, you just simply upload your code and Elastic Beanstalk automatically handles the deployment from capacity 
+  provisioning, load balancing, and auto scaling to application health monitoring.
+  Elastic Beanstalk automatically scales your application up and down based on your application's specific need using 
+  easily adjustable auto scaling settings. For example, you can use CPU utilization metrics to trigger auto scaling actions.
+  Elastic Beanstalk handles a lot of the management for you, but that doesn't mean you lose control over the underlying 
+  resources. You have the freedom to select these AWS resources such as the Amazon EC2 instance type that is the most optimal
+  for your application.
   
 
   
