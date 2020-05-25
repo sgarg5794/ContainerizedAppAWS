@@ -87,5 +87,24 @@ docker run -it scare_me bin/sh
 CMD["executible", "param"]
   There can be only one CMD in the docker file , if there are many only the last one will execute . The main purpose of a CMD is to provide defaults for 
   an executing container.
-    
+docker exec -d flask-tutorial touch /tmp/test   
+  exec command to run a command in a running container 
+  
+In order to be able to push our Docker image to ECR first we will use the CLI. You tell them that you will first need to 
+authorize your Cloud9 docker client with the AWS CLI's ecr get-login command:
+  aws ecr get-login --region us-west-2 --no-include-email
+this command will give you the detaisl to login just copy and paste it in terminal 
+We will get following response:
+  WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+  WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
+  Configure a credential helper to remove this warning. See
+  https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+  ​
+  Login Succeeded
+Now Create a repository to store the images :
+  aws ecr create-repository --repository-name flask-tutorial
+push the images to aws ecr:
+  docker push 
+now list the images inside AWS ECR:
+  aws ecr list-images --repository-name flask-tutorial
     
