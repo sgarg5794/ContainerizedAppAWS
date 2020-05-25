@@ -84,6 +84,8 @@ docker help:
 docker run -it scare_me bin/sh
   It would open interactive shell to see what inside the container . Normally we won't do this  if you are deploying. 
   However it's a great way to show your students how to not only run but interact with that "soon to be running" container.
-    
+CMD["executible", "param"]
+  There can be only one CMD in the docker file , if there are many only the last one will execute . The main purpose of a CMD is to provide defaults for 
+  an executing container.
     
     
