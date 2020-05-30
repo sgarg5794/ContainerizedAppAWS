@@ -1,0 +1,3 @@
+Number of subntes :
+      2^req subnet size-block size 
+      block size = next boundary -(/number of bits)written with the network range
